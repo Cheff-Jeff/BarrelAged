@@ -2,9 +2,20 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <layer-list>
+            <item android:left="1dp" android:top="2dp">
+                <shape>
+                    <gradient
+                        android:startColor="@color/ShadowStart"
+                        android:centerColor="@color/ShadowCenter"
+                        android:endColor="@color/ShadowEnd"
+                        android:angle="90"
+                    />
+                    <corners android:radius="15dp" />
+                </shape>
+            </item>
             <item
                 android:left="0dp"
-                android:right="1dp"
+                android:right="1.7dp"
                 android:top="0dp"
                 android:bottom="2dp">
                 <shape android:shape="rectangle" android:innerRadius="20dp">
