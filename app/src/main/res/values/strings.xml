@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BarrelAged</string>
+<!--  Login screen  -->
+    <string name="btnLogin">Login</string>
+    <string name="title">Login</string>
+<!--  end login screen  -->
 </resources>
