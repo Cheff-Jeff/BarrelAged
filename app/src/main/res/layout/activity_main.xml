@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/bgMain"
     tools:context=".MainActivity"
-    android:paddingStart="45dp"
-    android:paddingEnd="45dp">
+    android:paddingStart="35dp"
+    android:paddingEnd="35dp">
 
     <TextView
         android:id="@+id/tvTitle"
