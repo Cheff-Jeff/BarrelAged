@@ -13,6 +13,7 @@
     <color name="bgMain">#2A2E35</color>
     <color name="txtWhite">#FFFFFF</color>
     <color name="mainBtnBg">#1C1B1F</color>
+    <color name="mainBtnBgPressed">#3A3544</color>
     <color name="mainBtnTxt">#D0BCFF</color>
     <color name="mainLinkTxt">#D0BCFF</color>
     <color name="ShadowStart">#30000000</color>
