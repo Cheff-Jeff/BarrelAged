@@ -19,4 +19,6 @@
     <color name="ShadowStart">#30000000</color>
     <color name="ShadowCenter">#17000000</color>
     <color name="ShadowEnd">#07000000</color>
+    <color name="inputBorder">#c5c5c5</color>
+    <color name="inputColor">#c5c5c5</color>
 </resources>

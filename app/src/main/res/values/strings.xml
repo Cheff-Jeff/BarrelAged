@@ -3,6 +3,10 @@
     <string name="app_logo">App logo</string>
 <!--  Login screen  -->
     <string name="btnLogin">Login</string>
+    <string name="btnGoogle">Login with Google</string>
     <string name="title">Login</string>
+    <string name="tiEmail">E-mail</string>
+    <string name="tiPassword">Password</string>
+    <string name="SignUplink">Sign up</string>
 <!--  end login screen  -->
 </resources>
