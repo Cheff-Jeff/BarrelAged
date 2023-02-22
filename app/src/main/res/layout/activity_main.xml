@@ -101,7 +101,7 @@
         android:fontFamily="@font/roboto_medium"
         android:letterSpacing="0.05"
         android:text="@string/SignUplink"
-        android:textColor="@color/mainLinkTxt"
+        android:textColor="@color/link_text"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
