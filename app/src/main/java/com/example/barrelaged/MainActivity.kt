@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.api.retrofitHelper
 import com.example.barrelaged.api.userApi
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -34,14 +35,14 @@ class MainActivity : AppCompatActivity() {
             Log.d("email", email)
             Log.d("password", password)
 
-            val userApi = retrofitHelper.getInstance().create(userApi::class.java)
+            val api = apiCalls()
             GlobalScope.launch {
-                val result = userApi.getUsers()
-                if(result.code() == 200){
-                    Log.d("result", result.body().toString())
+                val users = api.getAllUsers()
+                if(users != null){
+                    Log.d("Users", users.toString())
                 }
                 else{
-                    Log.d("error", result.toString())
+                    Log.d("error", "Oeps")
                 }
             }
         }
