@@ -10,6 +10,7 @@ import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.api.retrofitHelper
 import com.example.barrelaged.api.userApi
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -35,14 +36,18 @@ class MainActivity : AppCompatActivity() {
             Log.d("email", email)
             Log.d("password", password)
 
+            val title = findViewById<TextView>(R.id.tvTitle)
+
             val api = apiCalls()
-            GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.Main) {
                 val users = api.getAllUsers()
                 if(users != null){
-                    Log.d("Users", users.toString())
+//                    Log.d("Users", users.toString())
+                    title.text = users[0].name
                 }
                 else{
-                    Log.d("error", "Oeps")
+                    title.text = "Woeps"
+//                    Log.d("error", "Oeps")
                 }
             }
         }
