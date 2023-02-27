@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:hint="@string/tiEmail"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle">
@@ -57,7 +58,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/tiPassword"
+        app:errorEnabled="true"
         android:layout_marginTop="25dp"
+        app:passwordToggleEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tiEmail">

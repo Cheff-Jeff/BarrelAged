@@ -3,40 +3,48 @@ package com.example.barrelaged
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import com.example.barrelaged.api.apiCalls
-import com.example.barrelaged.api.retrofitHelper
-import com.example.barrelaged.api.userApi
+import com.example.barrelaged.databinding.ActivityMainBinding
 import com.example.barrelaged.modals.userDto
+import com.example.barrelaged.validation.validationHelper
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val signUp = findViewById<TextView>(R.id.tvSignUp)
-        signUp.setOnClickListener{
+        emailFocusListener()
+        passwordFocusListener()
+
+        //btnSignUp click event
+        binding.tvSignUp.setOnClickListener{
             startActivity(Intent(this@MainActivity, SignUp::class.java))
         }
 
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        btnLogin.setOnClickListener {
-            val email = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tiEmail)
-                .editText?.text.toString()
-            val password = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tiPassword)
-                .editText?.text.toString()
+        //btnLogin click event
+        binding.btnLogin.setOnClickListener {
+            binding.tiEmail.error = validationHelper()
+                .validateEmail(binding.tiEmail.editText?.text.toString())
+            binding.tiPassword.error =validationHelper()
+                .validateLoginPass(binding.tiPassword.editText?.text.toString())
 
-            val api = apiCalls()
-            GlobalScope.launch {
-                val result = api.loginUser( userDto( name = "", email, password = password ))
+            if(binding.tiEmail.error == null && binding.tiPassword.error == null)
+            {
+                binding.tvTitle.text = "Test"
+                GlobalScope.launch {
+                    val result = apiCalls().loginUser( userDto(
+                        name = "",
+                        email = binding.tiEmail.editText?.text.toString(),
+                        password = binding.tiPassword.editText?.text.toString()
+                    ))
+                }
             }
 
             //            val title = findViewById<TextView>(R.id.tvTitle)
@@ -51,6 +59,26 @@ class MainActivity : AppCompatActivity() {
 ////                    Log.d("error", "Oeps")
 //                }
 //            }
+        }
+    }
+
+    private fun emailFocusListener(){
+        binding.tiEmail.editText?.setOnFocusChangeListener { _, focused ->
+            if(!focused) {
+                binding.tiEmail.error = validationHelper().validateEmail(
+                    binding.tiEmail.editText?.text.toString()
+                )
+            }
+        }
+    }
+
+    private fun passwordFocusListener(){
+        binding.tiPassword.editText?.setOnFocusChangeListener { _, focused ->
+            if(!focused) {
+                binding.tiPassword.error = validationHelper().validateLoginPass(
+                    binding.tiPassword.editText?.text.toString()
+                )
+            }
         }
     }
 }
