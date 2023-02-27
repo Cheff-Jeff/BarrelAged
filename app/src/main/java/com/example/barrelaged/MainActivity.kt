@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.api.retrofitHelper
 import com.example.barrelaged.api.userApi
+import com.example.barrelaged.modals.userDto
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -33,23 +34,23 @@ class MainActivity : AppCompatActivity() {
             val password = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tiPassword)
                 .editText?.text.toString()
 
-            Log.d("email", email)
-            Log.d("password", password)
-
-            val title = findViewById<TextView>(R.id.tvTitle)
-
             val api = apiCalls()
-            GlobalScope.launch(Dispatchers.Main) {
-                val users = api.getAllUsers()
-                if(users != null){
-//                    Log.d("Users", users.toString())
-                    title.text = users[0].name
-                }
-                else{
-                    title.text = "Woeps"
-//                    Log.d("error", "Oeps")
-                }
+            GlobalScope.launch {
+                val result = api.loginUser( userDto( name = "", email, password = password ))
             }
+
+            //            val title = findViewById<TextView>(R.id.tvTitle)
+//            GlobalScope.launch(Dispatchers.Main) {
+//                val users = api.getAllUsers()
+//                if(users != null){
+////                    Log.d("Users", users.toString())
+//                    title.text = users[0].name
+//                }
+//                else{
+//                    title.text = "Woeps"
+////                    Log.d("error", "Oeps")
+//                }
+//            }
         }
     }
 }
