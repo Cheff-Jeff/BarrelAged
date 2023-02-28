@@ -9,4 +9,12 @@
     <string name="tiPassword">Password</string>
     <string name="SignUplink">Sign up</string>
     <!--  end login screen  -->
+
+    <!--  Sign up screen  -->
+    <string name="SignUpTitle">Sign up</string>
+    <string name="tiName">Full name</string>
+    <string name="tiRPassword">Confirm password</string>
+    <string name="LoginLink">Login</string>
+    <string name="btnSignUp">Sign up</string>
+    <!--  end Sign up screen  -->
 </resources>
