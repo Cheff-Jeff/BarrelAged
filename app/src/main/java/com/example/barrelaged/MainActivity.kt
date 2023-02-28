@@ -1,24 +1,34 @@
 package com.example.barrelaged
 
 import android.content.Intent
+import androidx.biometric.BiometricPrompt
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.barrelaged.api.apiCalls
+import com.example.barrelaged.biometric.biometricHelper
 import com.example.barrelaged.databinding.ActivityMainBinding
 import com.example.barrelaged.modals.userDto
 import com.example.barrelaged.validation.validationHelper
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.concurrent.Executor
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var bioPrompt: BiometricPrompt
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if(biometricHelper.hasBiometricOption(this)){
+            activateBioPrompt()
+        }
 
         emailFocusListener()
         passwordFocusListener()
@@ -80,5 +90,35 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun activateBioPrompt(){
+        bioPrompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this),
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    Toast.makeText(applicationContext, "Authentication error: $errString", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    Toast.makeText(applicationContext,
+                        "Authentication succeeded!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    Toast.makeText(applicationContext, "Authentication failed",
+                        Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+
+        bioPrompt.authenticate(BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Fingerprint log in.")
+            .setSubtitle("Log in using your finger print.")
+            .setNegativeButtonText("Use e-mail and password.")
+            .build())
     }
 }
