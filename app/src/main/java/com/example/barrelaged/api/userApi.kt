@@ -12,7 +12,8 @@ interface userApi {
     //api endpoint
     @GET("User")
     suspend fun getUsers(): Response<List<user>>
-
     @POST("User/Login")
-    suspend fun login(@Body userDto: userDto?): Response<userDto?>
+    suspend fun login(@Body userDto: userDto?): Response<user>
+    @POST("User")
+    suspend fun signUp(@Body userDto: userDto?): Response<user>
 }

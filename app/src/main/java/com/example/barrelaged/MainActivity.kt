@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.biometric.BiometricPrompt
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.barrelaged.api.apiCalls
@@ -12,6 +13,7 @@ import com.example.barrelaged.databinding.ActivityMainBinding
 import com.example.barrelaged.modals.userDto
 import com.example.barrelaged.validation.validationHelper
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
@@ -57,18 +59,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            //            val title = findViewById<TextView>(R.id.tvTitle)
-//            GlobalScope.launch(Dispatchers.Main) {
-//                val users = api.getAllUsers()
-//                if(users != null){
-////                    Log.d("Users", users.toString())
-//                    title.text = users[0].name
-//                }
-//                else{
-//                    title.text = "Woeps"
-////                    Log.d("error", "Oeps")
-//                }
-//            }
+                        val title = findViewById<TextView>(R.id.tvTitle)
+            GlobalScope.launch(Dispatchers.Main) {
+                val users = apiCalls().getAllUsers()
+                if(users != null){
+//                    Log.d("Users", users.toString())
+                    title.text = users[0].name
+                }
+                else{
+                    title.text = "Woeps"
+//                    Log.d("error", "Oeps")
+                }
+            }
         }
     }
 

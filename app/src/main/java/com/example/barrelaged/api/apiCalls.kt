@@ -34,4 +34,18 @@ class apiCalls {
         }
         return null
     }
+
+    suspend fun signUpCall(dto: userDto): String?{
+        try {
+            val result = userApi.signUp(dto)
+            print(result)
+            if(result.code() == 201)
+            {
+                return "done"
+            }
+        }catch (e: Exception){
+            Log.d("exception", e.toString())
+        }
+        return null
+    }
 }

@@ -29,4 +29,24 @@ class validationHelper {
         }
         return "Invalid password."
     }
+    fun validateRePassword(input: String, repeatPass: String): String?{
+        if(input != ""){
+            if(input.length > 9) {
+                if(input == repeatPass){
+                    return null
+                }
+                return "password must match."
+            }
+        }
+        return "Invalid password."
+    }
+
+    fun validateName(input: String): String?{
+        if (input != ""){
+            if(input.matches(Regex("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]+$"))){
+                return null
+            }
+        }
+        return "Invalid name."
+    }
 }
