@@ -11,4 +11,12 @@ object retrofitHelper {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    val externhost = "https://api.punkapi.com/v2/"
+    fun getExternInstance(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(externhost)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
 }
