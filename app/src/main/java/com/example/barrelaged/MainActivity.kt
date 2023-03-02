@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, SignUp::class.java))
         }
 
+        binding.btnGoogle.setOnClickListener{
+            startActivity(Intent(this@MainActivity, BeerDetails::class.java))
+        }
+
         //btnLogin click event
         binding.btnLogin.setOnClickListener {
             binding.tiEmail.error = validationHelper()
