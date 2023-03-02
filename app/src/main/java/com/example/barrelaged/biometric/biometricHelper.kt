@@ -1,8 +1,10 @@
 package com.example.barrelaged.biometric
 
 import android.content.Context
+import android.security.keystore.KeyProperties
 import android.util.Log
 import androidx.biometric.BiometricManager
+import java.security.KeyPairGenerator
 
 
 object biometricHelper{
@@ -33,5 +35,16 @@ object biometricHelper{
             }
         }
         return false
+    }
+
+    fun keyGenerator(){
+        KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, "AndroidKeyStore")
+        KeyPairGenerator.initialize(new KeyGenParameterSpec.Builder(KEY_NAME,
+            KeyProperties.PURPOSE_SIGN)
+            .setDigests(KeyProperties.DIGEST_SHA256)
+            .setAlgorithmParameterSpec(new ECGenParameterSpec("secp256r1"))
+            .setUserAuthenticationRequired(true)
+            .build()
+        keyPairGenerator.generateKeyPair();
     }
 }
