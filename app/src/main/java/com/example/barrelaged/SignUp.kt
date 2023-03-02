@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import com.example.barrelaged.api.apiCalls
+import com.example.barrelaged.btnLoading.btnLoading
 import com.example.barrelaged.databinding.ActivitySignUpBinding
 import com.example.barrelaged.modals.userDto
 import com.example.barrelaged.validation.validationHelper
@@ -32,6 +33,8 @@ class SignUp : AppCompatActivity() {
         }
 
         binding.btnSignUp.setOnClickListener {
+            val btnText = binding.btnSignUp.text.toString()
+            btnLoading.startProcess(binding.btnSignUp, this)
             //validate
             binding.tiName.error = validationHelper().validateName(
                 binding.tiName.editText?.text.toString()
@@ -60,6 +63,8 @@ class SignUp : AppCompatActivity() {
                     if(result != null){
                         binding.tvTitle.text = "Done"
                     }
+
+                    btnLoading.endProcess(binding.btnSignUp, btnText)
                 }
             }
         }

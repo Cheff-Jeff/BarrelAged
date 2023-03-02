@@ -9,14 +9,16 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.biometric.biometricHelper
+import com.example.barrelaged.btnLoading.btnLoading
 import com.example.barrelaged.databinding.ActivityMainBinding
 import com.example.barrelaged.modals.userDto
 import com.example.barrelaged.validation.validationHelper
+import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
+import com.google.android.material.progressindicator.IndeterminateDrawable
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.concurrent.Executor
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -42,6 +44,9 @@ class MainActivity : AppCompatActivity() {
 
         //btnLogin click event
         binding.btnLogin.setOnClickListener {
+            val btnText = binding.btnLogin.text.toString()
+            btnLoading.startProcess(binding.btnLogin, this)
+
             binding.tiEmail.error = validationHelper()
                 .validateEmail(binding.tiEmail.editText?.text.toString())
             binding.tiPassword.error =validationHelper()
@@ -49,26 +54,13 @@ class MainActivity : AppCompatActivity() {
 
             if(binding.tiEmail.error == null && binding.tiPassword.error == null)
             {
-                binding.tvTitle.text = "Test"
-                GlobalScope.launch {
+                GlobalScope.launch(Dispatchers.Main) {
                     val result = apiCalls().loginUser( userDto(
                         name = "",
                         email = binding.tiEmail.editText?.text.toString(),
                         password = binding.tiPassword.editText?.text.toString()
                     ))
-                }
-            }
-
-                        val title = findViewById<TextView>(R.id.tvTitle)
-            GlobalScope.launch(Dispatchers.Main) {
-                val users = apiCalls().getAllUsers()
-                if(users != null){
-//                    Log.d("Users", users.toString())
-                    title.text = users[0].name
-                }
-                else{
-                    title.text = "Woeps"
-//                    Log.d("error", "Oeps")
+                    btnLoading.endProcess(binding.btnLogin, btnText, )
                 }
             }
         }
