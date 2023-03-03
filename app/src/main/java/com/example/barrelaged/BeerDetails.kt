@@ -33,6 +33,7 @@ class BeerDetails : AppCompatActivity() {
         val firstbrewed = findViewById<TextView>(R.id.firstbrewed)
         val foodpairing = findViewById<TextView>(R.id.foodparing)
         val brewerstip = findViewById<TextView>(R.id.brewerstip)
+        val beername = findViewById<TextView>(R.id.beername)
 
         //all interactive items (clickable)
         val show = findViewById<TextView>(R.id.showdescription)
@@ -46,6 +47,10 @@ class BeerDetails : AppCompatActivity() {
             val beer = apiCalls().getRandomBeer()
             if (beer != null) {
                 Log.d("beer", beer.toString())
+
+                //set title value
+                val beertitle = beer[0].name
+                beername.text = beertitle
 
                 //set image value
                 val image_url = beer[0].image_url
@@ -107,7 +112,7 @@ class BeerDetails : AppCompatActivity() {
         val paramsbrewerstip: LayoutParams = brewerstip.layoutParams
         showbrewerstip.setOnClickListener{
             if(paramsbrewerstip.height == ViewGroup.LayoutParams.WRAP_CONTENT){
-                paramsbrewerstip.height = 133
+                paramsbrewerstip.height = 90
                 showbrewerstip.setRotation(90f)
             }
             else{
@@ -121,7 +126,7 @@ class BeerDetails : AppCompatActivity() {
         val paramsfoodpairing: LayoutParams = foodpairing.layoutParams
         showfoodpairing.setOnClickListener{
             if(paramsfoodpairing.height == ViewGroup.LayoutParams.WRAP_CONTENT){
-                paramsfoodpairing.height = 133
+                paramsfoodpairing.height = 90
                 showfoodpairing.setRotation(90f)
             }
             else{
