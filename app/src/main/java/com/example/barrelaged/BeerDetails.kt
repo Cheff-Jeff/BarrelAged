@@ -2,6 +2,7 @@ package com.example.barrelaged
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils.replace
 import android.util.Log
@@ -35,36 +36,41 @@ class BeerDetails : AppCompatActivity() {
 
         //all interactive items (clickable)
         val show = findViewById<TextView>(R.id.showdescription)
+        val showfoodpairing = findViewById<ImageView>(R.id.foodparingdd)
+        val showbrewerstip = findViewById<ImageView>(R.id.brewertipdd)
+        val facebook = findViewById<Button>(R.id.btnfacebook)
+        val twitter = findViewById<Button>(R.id.btntwitter)
+        val instagram = findViewById<Button>(R.id.btninstagram)
 
         GlobalScope.launch(Dispatchers.Main) {
             val beer = apiCalls().getRandomBeer()
             if (beer != null) {
                 Log.d("beer", beer.toString())
 
-                //set image
+                //set image value
                 val image_url = beer[0].image_url
                 Picasso.get().load(image_url).into(image)
 
-                //set description
+                //set description value
                 val descriptionText = beer[0].description
                 description.text = descriptionText
 
-                //set abv
-                val abvText = "ABV: " + beer[0].abv
+                //set abv value
+                val abvText = "ABV: " + beer[0].abv + "%"
                 abv.text = abvText
 
-                //set firstbrewed
+                //set firstbrewed value
                 val firstbrewedText = "First brewed: " + beer[0].first_brewed
                 firstbrewed.text = firstbrewedText
 
-                //set foodpairing
+                //set foodpairing value
                 val foodpairingText = beer[0].food_pairing
                 val sb = StringBuilder()
                 foodpairingText.forEach { sb.append(it + System.lineSeparator()) }
                 val str = sb.toString()
                 foodpairing.text = str
 
-                //set brewerstip
+                //set brewerstip value
                 val brewerstipText = beer[0].brewers_tips
                 brewerstip.text = brewerstipText
 
@@ -73,11 +79,64 @@ class BeerDetails : AppCompatActivity() {
             }
         }
 
+        //navigate to facebook(brewdog)
+        facebook.setOnClickListener{
+            val url = "https://www.facebook.com/brewdognederland/?locale=nl_NL"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        }
+
+        //navigate to twitter(brewdog)
+        twitter.setOnClickListener{
+            val url = "https://twitter.com/BrewDog"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        }
+
+        //navigate to instagram(brewdog)
+        instagram.setOnClickListener{
+            val url = "https://www.instagram.com/brewdogoutpostrdam/"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        }
+
+        //layout brewerstip aanpassen (show/hide)
+        val paramsbrewerstip: LayoutParams = brewerstip.layoutParams
+        showbrewerstip.setOnClickListener{
+            if(paramsbrewerstip.height == ViewGroup.LayoutParams.WRAP_CONTENT){
+                paramsbrewerstip.height = 133
+                showbrewerstip.setRotation(90f)
+            }
+            else{
+                paramsbrewerstip.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                showbrewerstip.setRotation(0f)
+            }
+            brewerstip.layoutParams = paramsbrewerstip
+        }
+
+        //layout foodpairing aanpassen (show/hide)
+        val paramsfoodpairing: LayoutParams = foodpairing.layoutParams
+        showfoodpairing.setOnClickListener{
+            if(paramsfoodpairing.height == ViewGroup.LayoutParams.WRAP_CONTENT){
+                paramsfoodpairing.height = 133
+                showfoodpairing.setRotation(90f)
+            }
+            else{
+                paramsfoodpairing.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                showfoodpairing.setRotation(0f)
+            }
+            foodpairing.layoutParams = paramsfoodpairing
+        }
+
+
         //layout description aanpassen (show/hide)
         val params: LayoutParams = description.layoutParams
         show.setOnClickListener{
             if(params.height == ViewGroup.LayoutParams.WRAP_CONTENT){
-                params.height = 140
+                params.height = 133
                     show.text = "more"
             }
             else{
