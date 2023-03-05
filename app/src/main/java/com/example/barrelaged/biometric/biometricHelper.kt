@@ -1,21 +1,19 @@
 package com.example.barrelaged.biometric
 
 import android.content.Context
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyProperties
-import android.util.Log
+import android.util.Base64
 import androidx.biometric.BiometricManager
-import java.math.BigInteger
-import java.security.KeyFactory
+import com.example.barrelaged.api.apiCalls
+import com.example.barrelaged.modals.BiomettricDto
+import com.example.barrelaged.modals.user
+import com.example.barrelaged.modals.userDto
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.PublicKey
 import java.security.Signature
-import java.security.spec.X509EncodedKeySpec
-import javax.crypto.Cipher
-import javax.crypto.SecretKey
+import java.security.spec.ECGenParameterSpec
 
 
 object biometricHelper{
@@ -52,82 +50,42 @@ object biometricHelper{
         return false
     }
 
-    fun addFingerAuth(pass: String){
+    suspend fun addFingerAuth(pass: String, email: String): user?{
         val keys = keyGenerator()
-        publicKey = keys.public
-        privateKey = keys.private
+        val signature = sign(pass.toByteArray(Charsets.UTF_8), keys.private)
 
-        val signature = sign(pass.toByteArray(Charsets.UTF_8), privateKey)
+        val result = apiCalls().addFingerprint(BiomettricDto(
+            signature = pass,
+            signatureHash = Base64.encodeToString(signature, Base64.NO_WRAP),
+            publicKey = Base64.encodeToString(keys.public.encoded, Base64.NO_WRAP),
+            email = email
+        ))
 
-        // stuur naar server signature en public key
+        if(result != null){
+            val response = apiCalls().loginUser(userDto(
+                Name = "String", Email = email, Password = pass, PublicKey = "String"
+            ))
+            if(response != null){
+                return response
+            }
+            return null
+        }
+
+        return null
     }
 
-    private fun sign(data: ByteArray, privateKey: PrivateKey): ByteArray{
-        //Create signature from private key and byte array
-        val signature = Signature.getInstance("SHA512withECDSA")
+    private fun sign(password: ByteArray, privateKey: PrivateKey): ByteArray{
+        // Sign the password with the private key using SHA256 ECDSA
+        val signature = Signature.getInstance("SHA256withECDSA")
         signature.initSign(privateKey)
-        signature.update(data)
+        signature.update(password)
         return signature.sign()
     }
 
-    private fun verify(): Boolean{
-        // ophalen user met public key
-        //maak call met signature voor check
-    }
-
-//    fun verify(signature: ByteArray, data: ByteArray): Boolean{
-//        //Create signature with public key
-//        val verifySignature = Signature.getInstance("SHA512withECDSA")
-//        verifySignature.initVerify(publicKey)
-//        verifySignature.update(data)
-//        return verifySignature.verify(signature)
-//    }
-//
-//    fun verify(signature: ByteArray, data: ByteArray, publicKeyString: String): Boolean{
-//        //verify with external public key
-//        val verifySignature = Signature.getInstance("SHA512withECDSA")
-//        val publicKey = KeyFactory.getInstance("EC")
-//            .generatePublic( X509EncodedKeySpec(
-//                android.util.Base64.decode(
-//                    publicKeyString,
-//                    android.util.Base64.DEFAULT
-//                )
-//            ))
-//        verifySignature.initVerify(publicKey)
-//        verifySignature.update(data)
-//        return verifySignature.verify(signature)
-//    }
-
-//    fun cipherInit(){
-//        val cipher = Cipher.getInstance(
-//            KeyProperties.KEY_ALGORITHM_RSA + "/" +
-//                    KeyProperties.BLOCK_MODE_CBC + "/" +
-//                    KeyProperties.ENCRYPTION_PADDING_PKCS7)
-//        keyStore?.load(null)
-//        val key = keyStore?.getKey("KEY_ALIAS", null) as SecretKey
-//        cipher?.init(Cipher.ENCRYPT_MODE, key)
-////        return true
-//    }
-
     private fun keyGenerator(): KeyPair{
-//        keyStore = KeyStore.getInstance("AndroidKeyStore")
-//        val keyPairGenerator: KeyPairGenerator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore")
-//
-//        keyStore?.load(null)
-//        val parameterSpec: KeyGenParameterSpec = KeyGenParameterSpec.Builder("KEY_ALIAS",
-//            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT).run {
-//                setDigests(KeyProperties.DIGEST_SHA256)                         //Set of digests algorithms with which the key can be used
-//                setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)   //Set of padding schemes with which the key can be used when signing/verifying
-//                setUserAuthenticationRequired(true)                             //Sets whether this key is authorized to be used only if the user has been authenticated, default false
-//                build()
-//            }
-//        keyPairGenerator.initialize(parameterSpec)
-//
-//        return keyPairGenerator.genKeyPair()
-
-        //ECDSA (Elliptic Curve Digital Signature Algorithm)
+        // Generate a key pair with ECDSA and a size of 256
         val keyPairGenerator = KeyPairGenerator.getInstance("EC")
-        keyPairGenerator.initialize(256)
-        return keyPairGenerator.genKeyPair()
+        keyPairGenerator.initialize(ECGenParameterSpec("secp256r1"))
+        return keyPairGenerator.generateKeyPair()
     }
 }

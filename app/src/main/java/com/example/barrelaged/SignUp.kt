@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Toast
 import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.btnLoading.btnLoading
 import com.example.barrelaged.databinding.ActivitySignUpBinding
@@ -55,15 +56,20 @@ class SignUp : AppCompatActivity() {
             {
                 GlobalScope.launch(Dispatchers.Main) {
                     val result = apiCalls().signUpCall( userDto(
-                        name = binding.tiName.editText?.text.toString(),
-                        email = binding.tiEmail.editText?.text.toString(),
-                        password = binding.tiPassword.editText?.text.toString()
+                        Name = binding.tiName.editText?.text.toString(),
+                        Email = binding.tiEmail.editText?.text.toString(),
+                        Password = binding.tiPassword.editText?.text.toString(),
+                        PublicKey = "String"
                     ))
 
                     if(result != null){
-                        binding.tvTitle.text = "Done"
+                        startActivity(
+                            Intent(this@SignUp, Welcome::class.java)
+                                .putExtra("email", binding.tiEmail.editText?.text.toString())
+                                .putExtra("password", binding.tiPassword.editText?.text.toString())
+                        )
                     }
-
+                    Toast.makeText(this@SignUp, "Something went wrong.", Toast.LENGTH_SHORT).show()
                     btnLoading.endProcess(binding.btnSignUp, btnText)
                 }
             }

@@ -17,4 +17,11 @@
     <string name="LoginLink">Login</string>
     <string name="btnSignUp">Sign up</string>
     <!--  end Sign up screen  -->
+
+    <!--  welcome screen  -->
+    <string name="WelcomeTitle">Welcome</string>
+    <string name="WelcomeTxt">Would you like to use your fingerprint to sign in the next time you visit? </string>
+    <string name="btnNo">No</string>
+    <string name="btnYes">Yes</string>
+    <!--  end welcome screen  -->
 </resources>
