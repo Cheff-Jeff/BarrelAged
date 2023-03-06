@@ -15,6 +15,9 @@
         android:theme="@style/Theme.BarrelAged"
         tools:targetApi="31">
         <activity
+            android:name=".BeerDetails"
+            android:exported="false" />
+        <activity
             android:name=".Welcome"
             android:exported="false" />
         <activity
