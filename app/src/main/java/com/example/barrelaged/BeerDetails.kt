@@ -2,6 +2,7 @@ package com.example.barrelaged
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils.replace
@@ -43,6 +44,9 @@ class BeerDetails : AppCompatActivity() {
         val twitter = findViewById<Button>(R.id.btntwitter)
         val instagram = findViewById<Button>(R.id.btninstagram)
 
+        val backbtn = findViewById<ImageView>(R.id.btnback)
+        val closebtn = findViewById<ImageView>(R.id.btnclose)
+
         GlobalScope.launch(Dispatchers.Main) {
             val beer = apiCalls().getRandomBeer()
             if (beer != null) {
@@ -82,6 +86,14 @@ class BeerDetails : AppCompatActivity() {
             } else {
                 Log.d("error", "Oeps")
             }
+        }
+
+        //go to previous
+        closebtn.setOnClickListener{
+            finish()
+        }
+        backbtn.setOnClickListener{
+            finish()
         }
 
         //navigate to facebook(brewdog)

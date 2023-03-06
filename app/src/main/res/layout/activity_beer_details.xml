@@ -30,7 +30,7 @@
         <TextView
             android:id="@+id/description"
             android:layout_width="380dp"
-            android:layout_height="50dp"
+            android:layout_height="52dp"
             android:text="TextView"
             android:textColor="@color/txtWhite"
             app:layout_constraintBottom_toBottomOf="parent"
