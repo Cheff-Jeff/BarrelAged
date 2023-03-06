@@ -1,14 +1,17 @@
 package com.example.barrelaged
 
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.view.Window
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -153,12 +156,25 @@ class BeerDetails : AppCompatActivity() {
         //layout description aanpassen (show/hide)
         val params: LayoutParams = description.layoutParams
         show.setOnClickListener{
-            if(params.height == ViewGroup.LayoutParams.WRAP_CONTENT){
+            if(params.height == LayoutParams.WRAP_CONTENT){
                 params.height = 134
                     show.text = "more"
             }
             else{
-                params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                description.measure(View.MeasureSpec.makeMeasureSpec(description.width - 0, View.MeasureSpec. EXACTLY), View.MeasureSpec.UNSPECIFIED)
+                val endHeight = description.measuredHeight
+
+                val heightAnimator = ValueAnimator.ofInt(params.height ,endHeight).setDuration(250);
+                heightAnimator.addUpdateListener { animation1 ->
+                    val value = animation1.animatedValue as Int
+                    description.layoutParams.height = value
+                    description.requestLayout()
+                }
+
+                val animationSet = AnimatorSet()
+                animationSet.interpolator = AccelerateDecelerateInterpolator()
+                animationSet.play(heightAnimator);
+                animationSet.start()
                 show.text = "less"
             }
             description.layoutParams = params

@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="53dp"
                 android:text="TextView"
+                android:animateLayoutChanges="true"
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/txtWhite"
                 app:layout_constraintBottom_toBottomOf="parent"
