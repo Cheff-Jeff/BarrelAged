@@ -1,7 +1,8 @@
 package com.example.barrelaged.modals
 
 data class userDto(
-    val name: String,
-    val email: String,
-    val password: String
+    val Name: String,
+    val Email: String,
+    val Password: String,
+    val PublicKey: String
 )

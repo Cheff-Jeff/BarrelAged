@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--  Main colors app  -->
+    <color name="transparent">#00000000</color>
     <color name="bgMain">#2A2E35</color>
     <color name="txtWhite">#FFFFFF</color>
     <color name="mainBtnBg">#1C1B1F</color>
