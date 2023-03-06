@@ -1,7 +1,9 @@
 package com.example.barrelaged
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.biometric.BiometricPrompt
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +15,7 @@ import com.example.barrelaged.biometric.biometricHelper
 import com.example.barrelaged.biometric.biometricHelper.addFingerAuth
 import com.example.barrelaged.btnLoading.btnLoading
 import com.example.barrelaged.databinding.ActivityMainBinding
+import com.example.barrelaged.modals.BiomettricDto
 import com.example.barrelaged.modals.userDto
 import com.example.barrelaged.validation.validationHelper
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
@@ -25,15 +28,23 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bioPrompt: BiometricPrompt
+    private lateinit var sharedPreferences: SharedPreferences
+
+    @SuppressLint("CommitPrefEdits")
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPreferences = this.getSharedPreferences("User", Context.MODE_PRIVATE)
 
-        if(biometricHelper.hasBiometricOption(this)){
-            activateBioPrompt()
+//        print(sharedPreferences)
+//        print(sharedPreferences.getString("UserKey", "Default"))
+        if(sharedPreferences.getString("UserKey", "Default") != "Default"){
+            if(biometricHelper.hasBiometricOption(this)){
+                activateBioPrompt()
+            }
         }
 
         emailFocusListener()
@@ -67,9 +78,9 @@ class MainActivity : AppCompatActivity() {
                     ))
 
                     if (result != null) {
-                        val sharedPreferences = getSharedPreferences("User", Context.MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
                         editor.putInt("UserId", result.id)
+                        editor.apply()
                         //start activity
 
                     }
@@ -100,6 +111,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun activateBioPrompt(){
         bioPrompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this),
             object : BiometricPrompt.AuthenticationCallback() {
@@ -111,9 +123,16 @@ class MainActivity : AppCompatActivity() {
                 override fun onAuthenticationSucceeded(
                     result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    Toast.makeText(applicationContext,
-                        "Authentication succeeded!", Toast.LENGTH_SHORT)
-                        .show()
+                    GlobalScope.launch {
+                        val result = apiCalls().fingerLogin(BiomettricDto(
+                                signatureHash = null,
+                                signature = "String",
+                                publicKey = sharedPreferences.getString("UserKey", null),
+                                email = null
+                        ))
+                        sharedPreferences.getString("UserKey", null)
+                        print(result)
+                    }
                 }
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()

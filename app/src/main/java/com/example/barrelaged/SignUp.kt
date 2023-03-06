@@ -63,13 +63,15 @@ class SignUp : AppCompatActivity() {
                     ))
 
                     if(result != null){
-                        startActivity(
-                            Intent(this@SignUp, Welcome::class.java)
-                                .putExtra("email", binding.tiEmail.editText?.text.toString())
-                                .putExtra("password", binding.tiPassword.editText?.text.toString())
-                        )
+                        val intent = Intent(this@SignUp, Welcome::class.java)
+                            .putExtra("email", binding.tiEmail.editText?.text.toString())
+                            .putExtra("password", binding.tiPassword.editText?.text.toString())
+
+                        startActivity(intent)
                     }
-                    Toast.makeText(this@SignUp, "Something went wrong.", Toast.LENGTH_SHORT).show()
+                    else{
+                        Toast.makeText(this@SignUp, "Something went wrong.", Toast.LENGTH_SHORT).show()
+                    }
                     btnLoading.endProcess(binding.btnSignUp, btnText)
                 }
             }

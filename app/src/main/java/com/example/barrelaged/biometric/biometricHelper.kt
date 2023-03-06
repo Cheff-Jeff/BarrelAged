@@ -50,7 +50,7 @@ object biometricHelper{
         return false
     }
 
-    suspend fun addFingerAuth(pass: String, email: String): user?{
+    suspend fun addFingerAuth(pass: String, email: String): Boolean{
         val keys = keyGenerator()
         val signature = sign(pass.toByteArray(Charsets.UTF_8), keys.private)
 
@@ -60,18 +60,11 @@ object biometricHelper{
             publicKey = Base64.encodeToString(keys.public.encoded, Base64.NO_WRAP),
             email = email
         ))
-
         if(result != null){
-            val response = apiCalls().loginUser(userDto(
-                Name = "String", Email = email, Password = pass, PublicKey = "String"
-            ))
-            if(response != null){
-                return response
-            }
-            return null
+            return true
         }
 
-        return null
+        return false
     }
 
     private fun sign(password: ByteArray, privateKey: PrivateKey): ByteArray{

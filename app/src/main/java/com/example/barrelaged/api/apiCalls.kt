@@ -23,9 +23,10 @@ class apiCalls {
     suspend fun loginUser(dto: userDto): user?{
         try {
             val result = userApi.login(dto)
+            print(result)
             if(result.code() == 200)
             {
-                return null
+                return result.body()
             }
         }catch (e: Exception){
             Log.d("exception", e.toString())

@@ -5,5 +5,7 @@ data class user(
     val name: String,
     val email: String,
     val password: String,
-    val salt: String
+    val salt: String,
+    val key: String?,
+    val fingerPrint: String?
 )
