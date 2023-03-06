@@ -9,4 +9,19 @@
     <string name="tiPassword">Password</string>
     <string name="SignUplink">Sign up</string>
     <!--  end login screen  -->
+
+    <!--  Sign up screen  -->
+    <string name="SignUpTitle">Sign up</string>
+    <string name="tiName">Full name</string>
+    <string name="tiRPassword">Confirm password</string>
+    <string name="LoginLink">Login</string>
+    <string name="btnSignUp">Sign up</string>
+    <!--  end Sign up screen  -->
+
+    <!--  welcome screen  -->
+    <string name="WelcomeTitle">Welcome</string>
+    <string name="WelcomeTxt">Would you like to use your fingerprint to sign in the next time you visit? </string>
+    <string name="btnNo">No</string>
+    <string name="btnYes">Yes</string>
+    <!--  end welcome screen  -->
 </resources>

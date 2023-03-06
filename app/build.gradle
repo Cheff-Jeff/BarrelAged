@@ -50,6 +50,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     // image url
     implementation 'com.squareup.picasso:picasso:2.8'
-    //text expand
-    implementation 'com.ms-square:expandableTextView:0.1.4'
+    //bio fingerscan
+    implementation "androidx.biometric:biometric:1.2.0-alpha05"
 }
