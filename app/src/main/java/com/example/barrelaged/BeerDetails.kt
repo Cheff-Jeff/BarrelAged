@@ -2,16 +2,15 @@ package com.example.barrelaged
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.media.Image
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.util.Log
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
+import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.barrelaged.api.apiCalls
@@ -24,6 +23,8 @@ import kotlinx.coroutines.launch
 class BeerDetails : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val window: Window = window
+        window.statusBarColor = resources.getColor(R.color.toolBar, null)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_beer_details)
 
@@ -124,7 +125,7 @@ class BeerDetails : AppCompatActivity() {
         val paramsbrewerstip: LayoutParams = brewerstip.layoutParams
         showbrewerstip.setOnClickListener{
             if(paramsbrewerstip.height == ViewGroup.LayoutParams.WRAP_CONTENT){
-                paramsbrewerstip.height = 90
+                paramsbrewerstip.height = 96
                 showbrewerstip.setRotation(90f)
             }
             else{
@@ -138,7 +139,7 @@ class BeerDetails : AppCompatActivity() {
         val paramsfoodpairing: LayoutParams = foodpairing.layoutParams
         showfoodpairing.setOnClickListener{
             if(paramsfoodpairing.height == ViewGroup.LayoutParams.WRAP_CONTENT){
-                paramsfoodpairing.height = 90
+                paramsfoodpairing.height = 96
                 showfoodpairing.setRotation(90f)
             }
             else{
@@ -153,7 +154,7 @@ class BeerDetails : AppCompatActivity() {
         val params: LayoutParams = description.layoutParams
         show.setOnClickListener{
             if(params.height == ViewGroup.LayoutParams.WRAP_CONTENT){
-                params.height = 133
+                params.height = 134
                     show.text = "more"
             }
             else{
