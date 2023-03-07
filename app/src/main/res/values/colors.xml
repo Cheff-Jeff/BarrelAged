@@ -23,4 +23,6 @@
     <color name="ShadowEnd">#07000000</color>
     <color name="inputBorder">#c5c5c5</color>
     <color name="inputColor">#c5c5c5</color>
+    <color name="borderColor">#49454F</color>
+    <color name="cardBg">#25232A</color>
 </resources>
