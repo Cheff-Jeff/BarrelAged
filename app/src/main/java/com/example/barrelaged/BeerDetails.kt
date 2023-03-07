@@ -1,22 +1,18 @@
 package com.example.barrelaged
 
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.view.Window
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.barrelaged.api.apiCalls
+import com.example.barrelaged.modals.Animations
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -51,6 +47,9 @@ class BeerDetails : AppCompatActivity() {
         val backbtn = findViewById<ImageView>(R.id.btnback)
         val closebtn = findViewById<ImageView>(R.id.btnclose)
 
+        val foodTitle = findViewById<TextView>(R.id.foodparingtitle)
+        val brewTitle = findViewById<TextView>(R.id.brewerstiptitle)
+
         GlobalScope.launch(Dispatchers.Main) {
             val beer = apiCalls().getRandomBeer()
             if (beer != null) {
@@ -61,8 +60,10 @@ class BeerDetails : AppCompatActivity() {
                 beername.text = beertitle
 
                 //set image value
-                val image_url = beer[0].image_url
-                Picasso.get().load(image_url).into(image)
+                if(beer[0].image_url != null){
+                    val image_url = beer[0].image_url
+                    Picasso.get().load(image_url).into(image)
+                }
 
                 //set description value
                 val descriptionText = beer[0].description
@@ -125,56 +126,87 @@ class BeerDetails : AppCompatActivity() {
         }
 
         //layout brewerstip aanpassen (show/hide)
+        var brewersOpen: Boolean = false
+        var brewersOldHeight: Int = 0;
         val paramsbrewerstip: LayoutParams = brewerstip.layoutParams
         showbrewerstip.setOnClickListener{
-            if(paramsbrewerstip.height == ViewGroup.LayoutParams.WRAP_CONTENT){
-                paramsbrewerstip.height = 96
-                showbrewerstip.setRotation(90f)
+            if(brewersOpen){
+                brewersOpen = false
+                Animations.shrinkTextViewHeight(brewerstip, brewersOldHeight)
+                showbrewerstip.animate().rotation(90f).setDuration(250).start()
             }
             else{
-                paramsbrewerstip.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                showbrewerstip.setRotation(0f)
+                brewersOldHeight = brewerstip.height
+                brewersOpen = true
+                Animations.growTextViewHeight(brewerstip)
+                showbrewerstip.animate().rotation(0f).setDuration(250).start()
+            }
+            brewerstip.layoutParams = paramsbrewerstip
+        }
+
+        brewTitle.setOnClickListener {
+            if(brewersOpen){
+                brewersOpen = false
+                Animations.shrinkTextViewHeight(brewerstip, brewersOldHeight)
+                showbrewerstip.animate().rotation(90f).setDuration(250).start()
+            }
+            else{
+                brewersOldHeight = brewerstip.height
+                brewersOpen = true
+                Animations.growTextViewHeight(brewerstip)
+                showbrewerstip.animate().rotation(0f).setDuration(250).start()
             }
             brewerstip.layoutParams = paramsbrewerstip
         }
 
         //layout foodpairing aanpassen (show/hide)
+        var foodOpen: Boolean = false
+        var foodOldHeight: Int = 0;
         val paramsfoodpairing: LayoutParams = foodpairing.layoutParams
         showfoodpairing.setOnClickListener{
-            if(paramsfoodpairing.height == ViewGroup.LayoutParams.WRAP_CONTENT){
-                paramsfoodpairing.height = 96
-                showfoodpairing.setRotation(90f)
+            if(foodOpen){
+                foodOpen = false
+                Animations.shrinkTextViewHeight(foodpairing, foodOldHeight)
+                showfoodpairing.animate().rotation(90f).setDuration(250).start()
             }
             else{
-                paramsfoodpairing.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                showfoodpairing.setRotation(0f)
+                foodOldHeight = foodpairing.height
+                foodOpen = true
+                Animations.growTextViewHeight(foodpairing)
+                showfoodpairing.animate().rotation(0f).setDuration(250).start()
             }
             foodpairing.layoutParams = paramsfoodpairing
         }
 
+        foodTitle.setOnClickListener {
+            if(foodOpen){
+                foodOpen = false
+                Animations.shrinkTextViewHeight(foodpairing, foodOldHeight)
+                showfoodpairing.animate().rotation(90f).setDuration(250).start()
+            }
+            else{
+                foodOldHeight = foodpairing.height
+                foodOpen = true
+                Animations.growTextViewHeight(foodpairing)
+                showfoodpairing.animate().rotation(0f).setDuration(250).start()
+            }
+            foodpairing.layoutParams = paramsfoodpairing
+        }
 
         //layout description aanpassen (show/hide)
         val params: LayoutParams = description.layoutParams
+        var descOpen: Boolean = false
+        var oldHeight: Int = 0;
         show.setOnClickListener{
-            if(params.height == LayoutParams.WRAP_CONTENT){
-                params.height = 134
-                    show.text = "more"
+            if(descOpen){
+                descOpen = false
+                Animations.shrinkTextViewHeight(description, oldHeight)
+                show.text = "more"
             }
             else{
-                description.measure(View.MeasureSpec.makeMeasureSpec(description.width - 0, View.MeasureSpec. EXACTLY), View.MeasureSpec.UNSPECIFIED)
-                val endHeight = description.measuredHeight
-
-                val heightAnimator = ValueAnimator.ofInt(params.height ,endHeight).setDuration(250);
-                heightAnimator.addUpdateListener { animation1 ->
-                    val value = animation1.animatedValue as Int
-                    description.layoutParams.height = value
-                    description.requestLayout()
-                }
-
-                val animationSet = AnimatorSet()
-                animationSet.interpolator = AccelerateDecelerateInterpolator()
-                animationSet.play(heightAnimator);
-                animationSet.start()
+                oldHeight = description.height;
+                descOpen = true
+                Animations.growTextViewHeight(description)
                 show.text = "less"
             }
             description.layoutParams = params

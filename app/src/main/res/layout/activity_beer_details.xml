@@ -36,7 +36,8 @@
                 android:layout_height="230dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                app:srcCompat="@drawable/resource_default"
+                tools:srcCompat="@drawable/resource_default" />
 
             <TextView
                 android:id="@+id/description"
