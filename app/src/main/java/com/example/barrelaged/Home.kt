@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.barrelaged.databinding.ActivityHomeBinding
 import com.example.barrelaged.databinding.ActivityWelcomeBinding
 import com.example.barrelaged.modals.dayModals.dayAdapter
+import com.example.barrelaged.modals.dayModals.dayDetailModal
 import com.example.barrelaged.modals.dayModals.dayModal
 
 class Home : AppCompatActivity() {
@@ -20,7 +21,7 @@ class Home : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
-        val adapter = dayAdapter(tempBeers())
+        val adapter = dayAdapter(tempBeers(), tempBeerDetails())
         binding.rvDays.adapter = adapter
         binding.rvDays.layoutManager = LinearLayoutManager(this)
     }
@@ -33,22 +34,14 @@ class Home : AppCompatActivity() {
             dayModal(1, "15/02/2023"),
             dayModal(15, "13/02/2023"),
             dayModal(15, "13/02/2023"),
-            dayModal(15, "13/02/2023"),
-            dayModal(15, "13/02/2023"),
-            dayModal(15, "13/02/2023"),
-            dayModal(15, "13/02/2023"),
-            dayModal(15, "13/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
-            dayModal(3, "12/02/2023"),
+        )
+    }
+
+    private fun tempBeerDetails(): List<dayDetailModal>{
+        return listOf(
+            dayDetailModal("Test", "12/01/2390", "5045NM Tilburg", "Dit is mijn test", "Steing"),
+            dayDetailModal("Jeffrey", "12/01/2390", "5045NM Tilburg", "Dit is mijn test", "Steing"),
+            dayDetailModal("Duvel", "12/01/2390", "5045NM Tilburg", "Dit is mijn test", "Steing"),
         )
     }
 }

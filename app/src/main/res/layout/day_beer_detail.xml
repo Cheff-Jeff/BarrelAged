@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="15dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/detailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
+                android:layout_toStartOf="@+id/detailInformation"
+                android:fontFamily="@font/roboto_medium"
+                android:letterSpacing="0.01"
+                android:text="La trappe quadrupel"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/detailInformation"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@drawable/info_icon" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/detailDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:text="15/02/2023"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/detailLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:text="BrewDog PLC, Balmacassie Industrial Estate, Ellon, Aberdeenshire, AB41 8BX, Verenigd Koninkrijk"
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
+
+    <ImageView
+        android:id="@+id/myImage"
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailLocation"
+        app:srcCompat="@drawable/resource_default" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myImage">
+
+        <TextView
+            android:id="@+id/descriptionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:fontFamily="@font/roboto_medium"
+            android:text="My description"
+            android:textColor="@color/txtWhite"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/descriptionToggle"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="-2dp"
+            android:adjustViewBounds="true"
+            android:rotation="90"
+            android:scaleType="fitXY"
+            android:src="@drawable/baseline_keyboard_arrow_right_24"
+            app:tint="@color/mainBtnTxt" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvMyDescription"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:fontFamily="@font/roboto_regular"
+        android:text="It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.38 SJ Tilburg"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMyDescription" />
+</androidx.constraintlayout.widget.ConstraintLayout>
