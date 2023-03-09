@@ -9,10 +9,7 @@ import android.view.Window
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.databinding.ActivityHomeBinding
-import com.example.barrelaged.databinding.ActivityWelcomeBinding
 import com.example.barrelaged.modals.dayModals.dayAdapter
-import com.example.barrelaged.modals.dayModals.dayDetailModal
-import com.example.barrelaged.modals.dayModals.dayModal
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
