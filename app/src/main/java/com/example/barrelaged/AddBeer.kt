@@ -3,6 +3,7 @@ package com.example.barrelaged
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -17,6 +18,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -28,6 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -47,6 +50,8 @@ class AddBeer : AppCompatActivity() {
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val window: Window = window
+        window.statusBarColor = resources.getColor(R.color.toolBar, null)
         supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         binding = ActivityAddbeerBinding.inflate(layoutInflater)
@@ -86,8 +91,8 @@ class AddBeer : AppCompatActivity() {
         //bier naar api sturen.
         binding.btnsave.setOnClickListener {
             submitBeer()
-            binding.txtbeer.editText?.setText("")
-            binding.txtbeerdescription.editText?.setText("")
+//            binding.txtbeer.editText?.setText("")
+//            binding.txtbeerdescription.editText?.setText("")
         }
 
         //terug naar vorige pagina
@@ -108,19 +113,24 @@ class AddBeer : AppCompatActivity() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun submitBeer() {
         GlobalScope.launch(Dispatchers.Main) {
-            apiCalls().saveBeer(
+            val call = apiCalls().saveBeer(
                 saveBeerDto(
                     beerDate = binding.txtdate.text.toString(),
                     beerLocation = binding.txtlocation.text.toString(),
                     beerName = binding.txtbeer.editText?.text.toString(),
                     beerDescription = binding.txtbeerdescription.editText?.text.toString(),
-                    UserId = 1
-//                    UserId = sharedPreferences.getInt("UserId", 1),
+                    UserId = sharedPreferences.getInt("UserId", 1),
                 )
             )
+//            if(call == 200){
+//                Snackbar.make(binding.root, "Beer has been added", Snackbar.LENGTH_SHORT).show()
+//                startActivity(Intent(this@AddBeer, MainActivity::class.java))
+//            }
             Snackbar.make(binding.root, "Beer has been added", Snackbar.LENGTH_SHORT).show()
+            startActivity(Intent(this@AddBeer, Home::class.java))
         }
     }
 

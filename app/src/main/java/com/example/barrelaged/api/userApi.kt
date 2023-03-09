@@ -37,5 +37,5 @@ interface userApi {
     suspend fun getUserDayOverview(@Query("id") id: Int,): Response<List<beerDTO>>
 
     @POST("Beer/getbeersbydate")
-    suspend fun getUserDaydetail(@Query("date") date: String,): Response<List<beerDTO>>
+    suspend fun getUserDaydetail(@Query("id") id: Int, @Query("date") date: String,): Response<List<beerDTO>>
 }

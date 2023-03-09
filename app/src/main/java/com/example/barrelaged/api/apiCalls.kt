@@ -94,12 +94,13 @@ class apiCalls {
         return null
     }
 
-    suspend fun saveBeer(dto: saveBeerDto): String? {
+    suspend fun saveBeer(dto: saveBeerDto): Int? {
         try {
             val result = userApi.saveBeer(dto)
-            if(result.code() == 200)
+            print(result)
+            if(result.code() == 204)
             {
-                return result.body()
+                return 200
             }
         }catch (e: Exception){
             Log.d("exception", e.toString())
@@ -121,9 +122,9 @@ class apiCalls {
         return null
     }
 
-    suspend fun getDayDetail(date: String): List<beerDTO>? {
+    suspend fun getDayDetail(id: Int, date: String): List<beerDTO>? {
         try {
-            val result = userApi.getUserDaydetail(date)
+            val result = userApi.getUserDaydetail(id, date)
             if(result.code() == 200){
                 return result.body()
             }

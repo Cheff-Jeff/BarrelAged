@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class dayAdapter(private val days: List<dayOverView>, private val details: List<dayDetailModal>):
+class dayAdapter(private val days: List<dayOverView>, private val id: Int):
     RecyclerView.Adapter<dayAdapter.ViewHolder>() {
     private lateinit var context: Context
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
@@ -64,9 +64,8 @@ class dayAdapter(private val days: List<dayOverView>, private val details: List<
             toggle.setOnClickListener {
                 if(overviewContainer.visibility == View.VISIBLE)
                 {
-
                     GlobalScope.launch(Dispatchers.Main) {
-                        val details = apiCalls().getDayDetail(days[position].date)
+                        val details = apiCalls().getDayDetail(id, days[position].date)
                         if(details != null){
                             val newAdapter = dayDetailAdapter(details)
                             DetailView.adapter = newAdapter
