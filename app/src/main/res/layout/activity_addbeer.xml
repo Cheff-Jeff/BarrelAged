@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgMain">
+
+    <include layout="@layout/toolbarsmall" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/baseline_date_range_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.026"
+        app:tint="@color/txtWhite" />
+
+    <TextView
+        android:id="@+id/txtdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="01/01/0001"
+        android:textColor="@color/txtWhite"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.035" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/baseline_location_on_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024"
+        app:tint="@color/txtWhite" />
+
+    <TextView
+        android:id="@+id/txtlocation"
+        android:layout_width="189dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="60dp"
+        android:text="Korte Tuinstraat 29-35, 5038 SJ Tilburg "
+        android:textColor="@color/txtWhite"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtbeer"
+        android:layout_width="370dp"
+        android:layout_height="70dp"
+        android:hint="Beer"
+        android:layout_marginTop="35dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toBottomOf="@+id/txtlocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:startIconDrawable="@drawable/baseline_search_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtbeerdescription"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:layout_marginTop="5dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toBottomOf="@+id/txtbeer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:lines="12"
+            android:overScrollMode="always"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnImage"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+        android:layout_width="370dp"
+        android:layout_height="45dp"
+        android:text="Upload image"
+        android:textColor="@color/mainBtnTxt"
+        android:textSize="15sp"
+        app:iconGravity="textStart"
+        app:iconTint="@color/mainBtnTxt"
+        android:layout_marginTop="35dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toBottomOf="@+id/txtbeerdescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/titleDividerNoCustom"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="1dp"
+        android:scaleType="fitXY"
+        android:background="#50C0C0C0"
+        android:layout_marginTop="20dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toBottomOf="@+id/btnImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnsave"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
+        android:text="Save"
+        android:textColor="@color/mainBtnTxt"
+        android:textSize="15sp"
+        app:endIconMode="clear_text"
+        app:iconGravity="textStart"
+        app:iconTint="@color/mainBtnTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleDividerNoCustom" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btncancel"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
+        android:text="Cancel"
+        android:textColor="@color/mainBtnTxt"
+        android:textSize="15sp"
+        app:endIconMode="clear_text"
+        app:iconGravity="textStart"
+        app:iconTint="@color/mainBtnTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleDividerNoCustom" />
+
+    <ImageView
+        android:id="@+id/test"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:srcCompat="@tools:sample/avatars" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

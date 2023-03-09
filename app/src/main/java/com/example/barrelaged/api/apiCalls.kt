@@ -3,11 +3,13 @@ package com.example.barrelaged.api
 import android.util.Log
 import com.example.barrelaged.modals.beer.beer
 import com.example.barrelaged.modals.BiomettricDto
+import com.example.barrelaged.modals.saveBeerDto
 import com.example.barrelaged.modals.dayModals.beerDTO
 import com.example.barrelaged.modals.dayModals.dayOverView
 import com.example.barrelaged.modals.dayModals.sortDayOverView
 import com.example.barrelaged.modals.user
 import com.example.barrelaged.modals.userDto
+import okhttp3.MultipartBody
 
 class apiCalls {
     private val userApi = retrofitHelper.getInstance().create(userApi::class.java)
@@ -82,11 +84,23 @@ class apiCalls {
     suspend fun getRandomBeer(): List<beer>? {
         try {
             val result = beerApi.getRandomBeer()
-            println(result.body())
-            print(result)
             if(result.code() == 200)
             {
                 return result.body()
+            }
+        }catch (e: Exception){
+            Log.d("exception", e.toString())
+        }
+        return null
+    }
+
+    suspend fun saveBeer(dto: saveBeerDto): Int? {
+        try {
+            val result = userApi.saveBeer(dto)
+            print(result)
+            if(result.code() == 204)
+            {
+                return 200
             }
         }catch (e: Exception){
             Log.d("exception", e.toString())
@@ -108,9 +122,9 @@ class apiCalls {
         return null
     }
 
-    suspend fun getDayDetail(date: String): List<beerDTO>? {
+    suspend fun getDayDetail(id: Int, date: String): List<beerDTO>? {
         try {
-            val result = userApi.getUserDaydetail(date)
+            val result = userApi.getUserDaydetail(id, date)
             if(result.code() == 200){
                 return result.body()
             }
