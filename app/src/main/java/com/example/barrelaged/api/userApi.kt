@@ -1,13 +1,14 @@
 package com.example.barrelaged.api
 
 import com.example.barrelaged.modals.BiomettricDto
+import com.example.barrelaged.modals.dayModals.beerDTO
 import com.example.barrelaged.modals.user
 import com.example.barrelaged.modals.userDto
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface userApi {
     //api endpoint
@@ -23,4 +24,10 @@ interface userApi {
 
     @POST("User/FingerAuth")
     suspend fun fingerLogin(@Body biometricDto: BiomettricDto): Response<user>
+
+    @POST("Beer/getbeersbyuserid")
+    suspend fun getUserDayOverview(@Query("id") id: Int,): Response<List<beerDTO>>
+
+    @POST("Beer/getbeersbydate")
+    suspend fun getUserDaydetail(@Query("date") date: String,): Response<List<beerDTO>>
 }

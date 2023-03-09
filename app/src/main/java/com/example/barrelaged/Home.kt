@@ -5,14 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Window
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.databinding.ActivityHomeBinding
 import com.example.barrelaged.databinding.ActivityWelcomeBinding
 import com.example.barrelaged.modals.dayModals.dayAdapter
 import com.example.barrelaged.modals.dayModals.dayDetailModal
 import com.example.barrelaged.modals.dayModals.dayModal
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class Home : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         val window: Window = window
         window.statusBarColor = resources.getColor(R.color.toolBar, null)
@@ -21,20 +27,14 @@ class Home : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
-        val adapter = dayAdapter(tempBeers(), tempBeerDetails())
-        binding.rvDays.adapter = adapter
-        binding.rvDays.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun tempBeers(): List<dayModal>{
-        return listOf(
-            dayModal(1, "15/02/2023"),
-            dayModal(1, "15/02/2023"),
-            dayModal(1, "15/02/2023"),
-            dayModal(1, "15/02/2023"),
-            dayModal(15, "13/02/2023"),
-            dayModal(15, "13/02/2023"),
-        )
+        GlobalScope.launch(Dispatchers.Main) {
+            val dayOverview = apiCalls().getDayOverview(1)
+            if(dayOverview != null){
+                val adapter = dayAdapter(dayOverview, tempBeerDetails())
+                binding.rvDays.adapter = adapter
+                binding.rvDays.layoutManager = LinearLayoutManager(this@Home)
+            }
+        }
     }
 
     private fun tempBeerDetails(): List<dayDetailModal>{

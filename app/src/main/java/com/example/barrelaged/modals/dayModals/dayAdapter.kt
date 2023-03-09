@@ -10,9 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.barrelaged.R
+import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.modals.Animations
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class dayAdapter(private val days: List<dayModal>, private val details: List<dayDetailModal>):
+class dayAdapter(private val days: List<dayOverView>, private val details: List<dayDetailModal>):
     RecyclerView.Adapter<dayAdapter.ViewHolder>() {
     private lateinit var context: Context
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
@@ -47,8 +51,8 @@ class dayAdapter(private val days: List<dayModal>, private val details: List<day
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         holder.apply {
-            val amount = days[position].beers.toString()
-            if(days[position].beers > 1){
+            val amount = days[position].amount.toString()
+            if(days[position].amount > 1){
                 beers.text = "$amount beers this day."
             }
             else{
@@ -60,12 +64,18 @@ class dayAdapter(private val days: List<dayModal>, private val details: List<day
             toggle.setOnClickListener {
                 if(overviewContainer.visibility == View.VISIBLE)
                 {
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val details = apiCalls().getDayDetail(days[position].date)
+                        if(details != null){
+                            val newAdapter = dayDetailAdapter(details)
+                            DetailView.adapter = newAdapter
+                            DetailView.layoutManager = LinearLayoutManager(context)
+                            toggle.text = "Close"
+                        }
+                    }
                     overviewContainer.visibility = View.GONE
                     detailContainer.visibility = View.VISIBLE
-                    val newAdapter = dayDetailAdapter(details)
-                    DetailView.adapter = newAdapter
-                    DetailView.layoutManager = LinearLayoutManager(context)
-                    toggle.text = "Close"
                 }
                 else
                 {

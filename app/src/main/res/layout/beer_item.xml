@@ -32,6 +32,7 @@
             android:id="@+id/card"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:minHeight="70dp"
             android:minWidth="90dp"
             app:cardBackgroundColor="@color/cardBg"
             app:strokeColor="@color/borderColor"

@@ -14,7 +14,7 @@ import com.example.barrelaged.Home
 import com.example.barrelaged.R
 import com.example.barrelaged.modals.Animations
 
-class dayDetailAdapter(private val details: List<dayDetailModal>):
+class dayDetailAdapter(private val details: List<beerDTO>):
     RecyclerView.Adapter<dayDetailAdapter.ViewHolder>() {
 
     private lateinit var context: Context
@@ -52,10 +52,10 @@ class dayDetailAdapter(private val details: List<dayDetailModal>):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.apply {
-            beerName.text = details[position].name
-            date.text = details[position].date
-            location.text = details[position].location
-            description.text = details[position].description
+            beerName.text = details[position].beerName
+            date.text = details[position].beerDate
+            location.text = details[position].beerLocation
+            description.text = details[position].beerDescription
 
             btnInfo.setOnClickListener {
                 context.startActivity(
