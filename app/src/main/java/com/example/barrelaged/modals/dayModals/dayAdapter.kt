@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.barrelaged.R
+import com.example.barrelaged.modals.Animations
 
 class dayAdapter(private val days: List<dayModal>, private val details: List<dayDetailModal>):
     RecyclerView.Adapter<dayAdapter.ViewHolder>() {
@@ -21,6 +22,7 @@ class dayAdapter(private val days: List<dayModal>, private val details: List<day
         val detailContainer: RelativeLayout
         val toggle: TextView
         val DetailView: RecyclerView
+        val cardContainer: com.google.android.material.card.MaterialCardView
 
         init {
             beers = view.findViewById(R.id.dayBeers)
@@ -29,6 +31,7 @@ class dayAdapter(private val days: List<dayModal>, private val details: List<day
             detailContainer = view.findViewById(R.id.dayDetail)
             toggle = view.findViewById(R.id.link)
             DetailView = view.findViewById(R.id.rvDayDetail)
+            cardContainer = view.findViewById(R.id.card)
         }
     }
 
@@ -59,11 +62,9 @@ class dayAdapter(private val days: List<dayModal>, private val details: List<day
                 {
                     overviewContainer.visibility = View.GONE
                     detailContainer.visibility = View.VISIBLE
-
                     val newAdapter = dayDetailAdapter(details)
                     DetailView.adapter = newAdapter
                     DetailView.layoutManager = LinearLayoutManager(context)
-
                     toggle.text = "Close"
                 }
                 else
