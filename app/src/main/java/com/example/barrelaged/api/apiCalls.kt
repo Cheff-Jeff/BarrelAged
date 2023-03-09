@@ -11,7 +11,6 @@ import okhttp3.MultipartBody
 class apiCalls {
     private val userApi = retrofitHelper.getInstance().create(userApi::class.java)
     private val beerApi = retrofitHelper.getExternInstance().create(beerApi::class.java)
-    private val localApi = retrofitHelper.getLocalInstance().create(userApi::class.java)
 
     suspend fun getAllUsers(): List<user>?{
         try {
@@ -92,16 +91,16 @@ class apiCalls {
         return null
     }
 
-//    suspend fun saveBeer(): String? {
-//        try {
-//            val result = localApi.uploadFile(MultipartBody.Part.createFormData("image",))
-//            if(result.code() == 200)
-//            {
-//                return result.body()
-//            }
-//        }catch (e: Exception){
-//            Log.d("exception", e.toString())
-//        }
-//        return null
-//    }
+    suspend fun saveBeer(dto: saveBeerDto): String? {
+        try {
+            val result = userApi.saveBeer(dto)
+            if(result.code() == 200)
+            {
+                return result.body()
+            }
+        }catch (e: Exception){
+            Log.d("exception", e.toString())
+        }
+        return null
+    }
 }

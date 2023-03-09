@@ -28,7 +28,6 @@ interface userApi {
     @POST("User/FingerAuth")
     suspend fun fingerLogin(@Body biometricDto: BiomettricDto): Response<user>
 
-    @Multipart
-    @POST("Beer/uploadimage")
-    suspend fun uploadFile(@Part body: MultipartBody.Part)
+    @POST("Beer/savebeer")
+    suspend fun saveBeer(@Body savebeerDto: saveBeerDto): Response<String>
 }

@@ -1,48 +1,40 @@
 package com.example.barrelaged
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.location.Geocoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Environment
 import android.provider.MediaStore
-import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
-import android.view.View.INVISIBLE
 import android.widget.*
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
-import androidx.loader.content.CursorLoader
 import com.example.barrelaged.api.apiCalls
-import com.example.barrelaged.api.retrofitHelper
-import com.example.barrelaged.api.uploadRequestBody
-import com.example.barrelaged.api.userApi
 import com.example.barrelaged.databinding.ActivityAddbeerBinding
 import com.example.barrelaged.modals.saveBeerDto
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.Callback
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 @Suppress("DEPRECATION")
 class AddBeer : AppCompatActivity() {
@@ -50,7 +42,8 @@ class AddBeer : AppCompatActivity() {
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var geocoder: Geocoder
     lateinit var imageUri: Uri
-    private val userApi = retrofitHelper.getLocalInstance().create(userApi::class.java)
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var resolver: ContentResolver
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +51,24 @@ class AddBeer : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddbeerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPreferences = this.getSharedPreferences("User", MODE_PRIVATE)
+        resolver = this.contentResolver
+
+//        var currentBeer = ""
+//        val items = ArrayList<String>()
+//        items.add("item1")
+//        items.add("item2")
+//        items.add("item3")
+//        items.add("item4")
+//        items.add("item5")
+//
+//        val adapterItems = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,items)
+//        binding.dropdown.setAdapter(adapterItems)
+//
+//        binding.dropdown.setOnItemClickListener { adapterView, view, i, l ->
+//            currentBeer = adapterView.getItemAtPosition(i).toString()
+//            println(currentBeer)
+//        }
 
         //huidige locatie vullen.
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -68,42 +79,50 @@ class AddBeer : AppCompatActivity() {
 
         //button take image
         binding.btnImage.setOnClickListener {
-//            getThisImage()
-            getImageFromGallary()
+            getThisImage()
+//            getImageFromGallary()
         }
 
+        //bier naar api sturen.
         binding.btnsave.setOnClickListener {
+            submitBeer()
+            binding.txtbeer.editText?.setText("")
+            binding.txtbeerdescription.editText?.setText("")
+        }
 
+        //terug naar vorige pagina
+        binding.btncancel.setOnClickListener {
+            finish()
+        }
+
+        val toolbartext = findViewById<TextView>(R.id.beername)
+        toolbartext.text = "Add beer"
+
+        val btnback = findViewById<ImageView>(R.id.btnback)
+        val btnclose = findViewById<ImageView>(R.id.btnclose)
+        btnback.setOnClickListener {
+            finish()
+        }
+        btnclose.setOnClickListener {
+            finish()
         }
     }
 
-    private fun getImageFromGallary() {
-        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickIntent.type = "image/*"
-        startActivityForResult(pickIntent, 101)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-            data?.data?.let { uri ->
-                uploadFile(uri)
-            }
-    }
-
-    private fun uploadFile(uri: Uri) {
-       GlobalScope.launch {
-            val stream = contentResolver.openInputStream(uri) ?: return@launch
-            val request = RequestBody.create(MediaType.parse("image/*"), stream.readBytes()) // read all bytes using kotlin extension
-            val filePart = MultipartBody.Part.createFormData(
-                "file",
-                "test.jpg",
-                request
+    private fun submitBeer() {
+        GlobalScope.launch(Dispatchers.Main) {
+            apiCalls().saveBeer(
+                saveBeerDto(
+                    beerDate = binding.txtdate.text.toString(),
+                    beerLocation = binding.txtlocation.text.toString(),
+                    beerName = binding.txtbeer.editText?.text.toString(),
+                    beerDescription = binding.txtbeerdescription.editText?.text.toString(),
+                    UserId = 1
+//                    UserId = sharedPreferences.getInt("UserId", 1),
+                )
             )
-                userApi.uploadFile(filePart)
-            Log.d("MyActivity", "on finish upload file")
+            Snackbar.make(binding.root, "Beer has been added", Snackbar.LENGTH_SHORT).show()
         }
     }
-
 
     private fun getThisDate() {
         val calander = Calendar.getInstance().time
@@ -142,29 +161,66 @@ class AddBeer : AppCompatActivity() {
         }
     }
 
-//    private fun getThisImage() {
-//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-//            != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            ActivityCompat.requestPermissions(
-//                this,
-//                arrayOf(android.Manifest.permission.CAMERA),
-//                101
-//            )
-//            return
-//        } else {
-//            val i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//            startActivityForResult(i, 101)
-//        }
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        var image = data?.getParcelableExtra<Bitmap>("data")
-//        binding.test.setImageBitmap(image)
-//        timer()
-//    }
+    private fun getThisImage() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.CAMERA),
+                101
+            )
+        } else {
+            val i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(i, 101)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        var image = data?.getParcelableExtra<Bitmap>("data")
+        binding.test.setImageBitmap(image)
+
+        saveToGallery()
+        timer()
+    }
+
+    private fun saveToGallery() {
+
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            == PackageManager.PERMISSION_GRANTED){
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+                imageUri = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+            }else{
+                imageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            }
+
+            val imageName = "barrelAged_${System.currentTimeMillis()}.jpg"
+            val contentValues = ContentValues()
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, imageName)
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+            var uri: Uri = resolver.insert(imageUri, contentValues)!!
+
+            try {
+                val bitmapDrawable = binding.test.drawable as BitmapDrawable
+                val bitmap = bitmapDrawable.bitmap
+
+                val outputStream = resolver.openOutputStream(Objects.requireNonNull(uri))
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                Objects.requireNonNull(outputStream)
+                Snackbar.make(binding.root, "Image saved to gallery", Snackbar.LENGTH_SHORT).show()
+
+            }catch (e: Exception){
+                Log.d("exception", e.toString())
+                Snackbar.make(binding.root, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+            }
+        }else{
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 101)
+        }
+    }
 
     private fun timer(){
         binding.test.isVisible = true
@@ -177,16 +233,3 @@ class AddBeer : AppCompatActivity() {
         timer.start()
     }
 }
-
-
-//private fun ContentResolver.getFileName(imageUri: Uri): String {
-//    var name = ""
-//    var returnCursor = this.query(imageUri, null,null,null,null)
-//    if(returnCursor!=null){
-//        val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-//        returnCursor.moveToFirst()
-//        name = returnCursor.getString(nameIndex)
-//        returnCursor.close()
-//    }
-//    return name
-//}
