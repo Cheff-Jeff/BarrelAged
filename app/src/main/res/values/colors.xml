@@ -11,7 +11,7 @@
 
     <!--  Main colors app  -->
     <color name="transparent">#00000000</color>
-    <color name="toolBar">#2A2831</color>
+    <color name="toolBar">#1C1B1F</color>
     <color name="bgMain">#2A2E35</color>
     <color name="txtWhite">#FFFFFF</color>
     <color name="mainBtnBg">#1C1B1F</color>
