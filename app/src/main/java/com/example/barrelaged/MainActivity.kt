@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnGoogle.setOnClickListener{
-            startActivity(Intent(this@MainActivity, BeerDetails::class.java))
+            startActivity(Intent(this@MainActivity, AddBeer::class.java))
         }
 
         //btnLogin click event

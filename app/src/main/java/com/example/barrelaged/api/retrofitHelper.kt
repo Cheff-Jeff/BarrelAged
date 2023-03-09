@@ -19,4 +19,12 @@ object retrofitHelper {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    val hostlocal = "https://10.0.2.2:7290/api/"
+    fun getLocalInstance(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(hostlocal)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
 }

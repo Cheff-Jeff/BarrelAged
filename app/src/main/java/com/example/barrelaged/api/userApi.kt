@@ -1,13 +1,17 @@
 package com.example.barrelaged.api
 
 import com.example.barrelaged.modals.BiomettricDto
+import com.example.barrelaged.modals.saveBeerDto
 import com.example.barrelaged.modals.user
 import com.example.barrelaged.modals.userDto
-import retrofit2.Call
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface userApi {
     //api endpoint
@@ -23,4 +27,8 @@ interface userApi {
 
     @POST("User/FingerAuth")
     suspend fun fingerLogin(@Body biometricDto: BiomettricDto): Response<user>
+
+    @Multipart
+    @POST("Beer/uploadimage")
+    suspend fun uploadFile(@Part body: MultipartBody.Part)
 }
