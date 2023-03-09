@@ -85,8 +85,8 @@ class MainActivity : AppCompatActivity() {
                         val editor = sharedPreferences.edit()
                         editor.putInt("UserId", result.id)
                         editor.apply()
-                        //start activity
-
+                        startActivity(
+                            Intent(this@MainActivity, Home::class.java))
                     }
                     Toast.makeText(this@MainActivity, "Something went wrong.", Toast.LENGTH_SHORT).show()
                     btnLoading.endProcess(binding.btnLogin, btnText)
@@ -134,8 +134,13 @@ class MainActivity : AppCompatActivity() {
                                 publicKey = sharedPreferences.getString("UserKey", null),
                                 email = null
                         ))
-                        sharedPreferences.getString("UserKey", null)
-                        print(result)
+                        if(result != null){
+                            val editor = sharedPreferences.edit()
+                            editor.putInt("UserId", result.id)
+                            editor.apply()
+                            startActivity(
+                                Intent(this@MainActivity, Home::class.java))
+                        }
                     }
                 }
                 override fun onAuthenticationFailed() {

@@ -27,6 +27,9 @@
             android:name=".AddBeer"
             android:exported="false" />
         <activity
+            android:name=".Home"
+            android:exported="false" />
+        <activity
             android:name=".BeerDetails"
             android:exported="false" />
         <activity

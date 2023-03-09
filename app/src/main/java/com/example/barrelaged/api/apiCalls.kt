@@ -4,6 +4,9 @@ import android.util.Log
 import com.example.barrelaged.modals.beer.beer
 import com.example.barrelaged.modals.BiomettricDto
 import com.example.barrelaged.modals.saveBeerDto
+import com.example.barrelaged.modals.dayModals.beerDTO
+import com.example.barrelaged.modals.dayModals.dayOverView
+import com.example.barrelaged.modals.dayModals.sortDayOverView
 import com.example.barrelaged.modals.user
 import com.example.barrelaged.modals.userDto
 import okhttp3.MultipartBody
@@ -96,6 +99,32 @@ class apiCalls {
             val result = userApi.saveBeer(dto)
             if(result.code() == 200)
             {
+                return result.body()
+            }
+        }catch (e: Exception){
+            Log.d("exception", e.toString())
+        }
+        return null
+    }
+
+    suspend fun getDayOverview(userID: Int): List<dayOverView>? {
+        try {
+            val result = userApi.getUserDayOverview(userID)
+            if(result.code() == 200){
+                if(result.body() != null){
+                    return sortDayOverView().sort(result.body()!!)
+                }
+            }
+        }catch (e: Exception){
+            Log.d("exception", e.toString())
+        }
+        return null
+    }
+
+    suspend fun getDayDetail(date: String): List<beerDTO>? {
+        try {
+            val result = userApi.getUserDaydetail(date)
+            if(result.code() == 200){
                 return result.body()
             }
         }catch (e: Exception){

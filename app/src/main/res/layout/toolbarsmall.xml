@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2A2831"
+        android:background="@color/toolBar"
         android:padding="16dp">
 
         <ImageView

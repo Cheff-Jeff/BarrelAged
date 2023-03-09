@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import com.example.barrelaged.api.apiCalls
 import com.example.barrelaged.biometric.biometricHelper
-import com.example.barrelaged.databinding.ActivitySignUpBinding
 import com.example.barrelaged.databinding.ActivityWelcomeBinding
 import com.example.barrelaged.modals.userDto
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -48,7 +47,7 @@ class Welcome : AppCompatActivity() {
                                 editor.putString("UserKey", response.key)
                                 editor.apply()
                                 startActivity(
-                                    Intent(this@Welcome, MainActivity::class.java))
+                                    Intent(this@Welcome, Home::class.java))
                             }
                         }
                     }
@@ -57,7 +56,22 @@ class Welcome : AppCompatActivity() {
         }
 
         binding.btnNo.setOnClickListener {
-            //start home
+            GlobalScope.launch(Dispatchers.Main) {
+                val email = intent.getStringExtra("email")
+                val password = intent.getStringExtra("password")
+
+                val response = apiCalls().loginUser(userDto(
+                    Name = "String", Email = email.toString(), Password = password.toString(), PublicKey = "String"
+                ))
+                if(response != null){
+                    val editor = sharedPreferences.edit()
+                    editor.putInt("UserId", response.id)
+                    editor.putString("UserKey", response.key)
+                    editor.apply()
+                    startActivity(
+                        Intent(this@Welcome, Home::class.java))
+                }
+            }
         }
     }
 }
