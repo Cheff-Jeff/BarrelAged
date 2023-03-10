@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnGoogle.setOnClickListener{
-            
+
         }
 
         //btnLogin click event
