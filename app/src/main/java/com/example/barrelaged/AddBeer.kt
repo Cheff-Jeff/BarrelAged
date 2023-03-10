@@ -20,6 +20,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
@@ -186,6 +187,7 @@ class AddBeer : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -196,40 +198,42 @@ class AddBeer : AppCompatActivity() {
         timer()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun saveToGallery() {
 
-        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            == PackageManager.PERMISSION_GRANTED){
-
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-                imageUri = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
-            }else{
-                imageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            }
-
-            val imageName = "barrelAged_${System.currentTimeMillis()}.jpg"
-            val contentValues = ContentValues()
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, imageName)
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-            var uri: Uri = resolver.insert(imageUri, contentValues)!!
-
-            try {
-                val bitmapDrawable = binding.test.drawable as BitmapDrawable
-                val bitmap = bitmapDrawable.bitmap
-
-                val outputStream = resolver.openOutputStream(Objects.requireNonNull(uri))
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                Objects.requireNonNull(outputStream)
-                Snackbar.make(binding.root, "Image saved to gallery", Snackbar.LENGTH_SHORT).show()
-
-            }catch (e: Exception){
-                Log.d("exception", e.toString())
-                Snackbar.make(binding.root, "Something went wrong", Snackbar.LENGTH_SHORT).show()
-            }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            imageUri = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
         }else{
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 101)
+            imageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         }
+
+        val imageName = "barrelAged_${System.currentTimeMillis()}.png"
+        val contentValues = ContentValues()
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, imageName)
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+        var uri: Uri = resolver.insert(imageUri, contentValues)!!
+
+        try {
+            val bitmapDrawable = binding.test.drawable as BitmapDrawable
+            val bitmap = bitmapDrawable.bitmap
+
+            val outputStream = resolver.openOutputStream(Objects.requireNonNull(uri))
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            Objects.requireNonNull(outputStream)
+            Snackbar.make(binding.root, "Image saved to gallery", Snackbar.LENGTH_SHORT).show()
+
+        }catch (e: Exception){
+            Log.d("exception", e.toString())
+            Snackbar.make(binding.root, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+        }
+//        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//            == PackageManager.PERMISSION_GRANTED){
+//
+//
+//        }else{
+//            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 101)
+//        }
     }
 
     private fun timer(){
