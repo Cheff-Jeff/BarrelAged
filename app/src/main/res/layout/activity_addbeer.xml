@@ -114,7 +114,7 @@
         style="@style/Widget.Material3.Button.ElevatedButton.Icon"
         android:layout_width="370dp"
         android:layout_height="45dp"
-        android:text="Upload image"
+        android:text="Take photo"
         android:textColor="@color/mainBtnTxt"
         android:textSize="15sp"
         app:iconGravity="textStart"
