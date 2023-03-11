@@ -45,6 +45,7 @@ class Welcome : AppCompatActivity() {
                                 val editor = sharedPreferences.edit()
                                 editor.putInt("UserId", response.id)
                                 editor.putString("UserKey", response.key)
+                                editor.putString("UserName", response.name)
                                 editor.apply()
                                 startActivity(
                                     Intent(this@Welcome, Home::class.java))
@@ -67,6 +68,7 @@ class Welcome : AppCompatActivity() {
                     val editor = sharedPreferences.edit()
                     editor.putInt("UserId", response.id)
                     editor.putString("UserKey", response.key)
+                    editor.putString("UserName", response.name)
                     editor.apply()
                     startActivity(
                         Intent(this@Welcome, Home::class.java))

@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                     if (result != null) {
                         val editor = sharedPreferences.edit()
                         editor.putInt("UserId", result.id)
+                        editor.putString("UserName", result.name)
                         editor.apply()
                         startActivity(
                             Intent(this@MainActivity, Home::class.java))
@@ -137,6 +138,7 @@ class MainActivity : AppCompatActivity() {
                         if(result != null){
                             val editor = sharedPreferences.edit()
                             editor.putInt("UserId", result.id)
+                            editor.putString("UserName", result.name)
                             editor.apply()
                             startActivity(
                                 Intent(this@MainActivity, Home::class.java))
